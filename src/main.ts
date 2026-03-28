@@ -7,8 +7,7 @@ import router from './router'
 import PrimeVue from 'primevue/config'
 import Aura from '@primeuix/themes/aura'
 
-// @ts-ignore
-import VueGtag from 'vue-gtag'
+import * as VueGtag from 'vue-gtag'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
@@ -29,11 +28,14 @@ app.use(PrimeVue, {
 })
 
 try {
+  // 環境変数からGA4の測定IDを取得します
   const gaMeasurementId = import.meta.env.VITE_GA_MEASUREMENT_ID
 
+  // 測定IDが存在する場合のみ、Google Analyticsを初期化します
   if (gaMeasurementId) {
+    // TypeScriptの型不一致エラーを回避するため any 型にキャストします
     app.use(
-      VueGtag,
+      VueGtag as any,
       {
         config: {
           id: gaMeasurementId,
@@ -46,6 +48,7 @@ try {
     console.warn('VITE_GA_MEASUREMENT_ID is not defined. Google Analytics initialization skipped.')
   }
 } catch (error) {
+  // 初期化中に予期せぬエラーが発生した場合は、エラーログを出力します
   console.error('An unexpected error occurred during Google Analytics initialization:', error)
 }
 
