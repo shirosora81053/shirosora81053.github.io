@@ -8,15 +8,13 @@ import Components from 'unplugin-vue-components/vite'
 import { BootstrapVueNextResolver } from 'bootstrap-vue-next/resolvers'
 import { PrimeVueResolver } from '@primevue/auto-import-resolver'
 
+import { cloudflare } from "@cloudflare/vite-plugin";
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(),
-    vueDevTools(),
-    Components({
-      resolvers: [BootstrapVueNextResolver(), PrimeVueResolver()],
-    }),
-  ],
+  plugins: [vue(), vueDevTools(), Components({
+    resolvers: [BootstrapVueNextResolver(), PrimeVueResolver()],
+  }), cloudflare()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
